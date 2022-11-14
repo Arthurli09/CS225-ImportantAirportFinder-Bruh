@@ -105,7 +105,7 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
     {
         adjacency_list[source] = unordered_map<Vertex, Edge>();
     }
-    
+
     //source vertex exists
     adjacency_list[source][destination] = Edge(source, destination);
     
@@ -114,11 +114,10 @@ bool Graph::insertEdge(Vertex source, Vertex destination)
 
 Edge Graph::removeEdge(Vertex source, Vertex destination)
 {
-    if(assertEdgeExists(source, destination, __func__) == false)
-        return InvalidEdge;
+    if(assertEdgeExists(source, destination, __func__) == false) return Edge();
+
     Edge e = adjacency_list[source][destination];
     adjacency_list[source].erase(destination);
-
     return e;
 }
 
