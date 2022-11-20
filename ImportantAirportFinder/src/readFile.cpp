@@ -1,6 +1,6 @@
 #include "readFile.h"
 
-vector<Airport> readFile(string country) {
+vector<Airport> readAirport(string dataLocation, string country) {
     vector<Airport> airports;
     Airport holder = Airport{"0", "", "", "", "", ""};
     airports.push_back(holder);
@@ -9,7 +9,7 @@ vector<Airport> readFile(string country) {
         If you are in the ImportantAirportFinder directory already,
         use ./lib/dataSet/airports.dat instead
     */
-    file.open("./ImportantAirportFinder/lib/dataSet/airports.dat");
+    file.open(dataLocation);
     if (file.is_open()) {
         string line;
         while (getline(file, line)) {
@@ -43,4 +43,33 @@ vector<Airport> readFile(string country) {
         throw runtime_error("Could not open file.");
     }
     return airports;
+}
+
+vector<Edge> readRoute(string dataLocation, string country) {
+    vector<Edge> routes;
+    ifstream file;
+    file.open(dataLocation);
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            Edge e;
+            string source;
+            string dest;
+            // Get variable
+            line = line.substr(line.find(",") + 1);
+            line = line.substr(line.find(",") + 1);
+            line = line.substr(line.find(",") + 1);
+
+            source = line.substr(0, line.find(","));
+            line = line.substr(line.find(",") + 1);
+            line = line.substr(line.find(",") + 1);
+            dest = line.substr(0, line.find(","));
+            // Push
+            e = Edge{source, dest};
+            routes.push_back(e);
+        }
+    } else {
+        throw runtime_error("Could not open file.");
+    }
+    return routes;
 }
