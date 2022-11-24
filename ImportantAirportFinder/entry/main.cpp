@@ -24,8 +24,15 @@ using namespace std;
 
 int main() {
     string country = "Papua New Guinea";
+    string airportFile = "./ImportantAirportFinder/lib/dataSet/airports.dat";
+    string routeFile = "./ImportantAirportFinder/lib/dataSet/routes.dat";
     bool found = false;
-    vector<Airport> test = readFile(country);
+    vector<Airport> test = readAirport(airportFile, country);
+    vector<Edge> routes = readRoute(routeFile, country);
+    for (auto edge : routes) {
+        cout << edge.source << " -> " << edge.dest << endl;
+    }
+
     for (unsigned int i = 0; i < test.size(); i++) {
         if (test[i].id != "0") {
             cout << "The first airport in " << country << " is: " << test[i].name << "." << endl;
