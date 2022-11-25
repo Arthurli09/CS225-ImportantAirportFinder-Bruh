@@ -24,8 +24,8 @@ using namespace std;
 
 int main() {
     string country = "Papua New Guinea";
-    string airportFile = "./ImportantAirportFinder/lib/dataSet/airports.dat";
-    string routeFile = "./ImportantAirportFinder/lib/dataSet/routes.dat";
+    string airportFile = "lib/dataSet/airports.dat";
+    string routeFile = "lib/dataSet/routes.dat";
     bool found = false;
     vector<Airport> test = readAirport(airportFile, country);
     vector<Edge> routes = readRoute(routeFile, country);
