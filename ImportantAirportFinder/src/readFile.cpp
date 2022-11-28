@@ -65,8 +65,10 @@ vector<Edge> readRoute(string dataLocation, string country) {
             line = line.substr(line.find(",") + 1);
             dest = line.substr(0, line.find(","));
             // Push
-            e = Edge{source, dest};
-            routes.push_back(e);
+            if (source != "\"N" && dest != "\"N") {
+                e = Edge{source, dest};
+                routes.push_back(e);
+            }
         }
     } else {
         throw runtime_error("Could not open file.");
