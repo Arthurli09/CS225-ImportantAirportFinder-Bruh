@@ -22,3 +22,4 @@ struct Edge {
 
 vector<Airport> readAirport(string dataLocation, string country);
 vector<Edge> readRoute(string dataLocation, string country);
+string formatString(string str);
