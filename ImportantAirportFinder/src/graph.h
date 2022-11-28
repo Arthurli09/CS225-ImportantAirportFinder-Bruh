@@ -20,12 +20,10 @@ using namespace std;
 
 class Graph {
 public:
-    Graph(string airportFile, string routeFile, string country);
+    Graph(vector<Airport> airports, vector<Edge> routes);
     void addEdge(string source, string dest);
+    vector<string> getVertices();
 private:
-    // Valid airports
-    vector<string> validAirports;
-    // string      ->      vector<string>
-    // airportID   ->      adjacent airportIDs
+    vector<string> airportIDs;
     unordered_map<string,vector<string>> adjList;
 };
