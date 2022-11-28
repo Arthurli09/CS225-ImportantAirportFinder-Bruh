@@ -23,21 +23,24 @@ using namespace std;
 */
 
 int main() {
-    string country = "Papua New Guinea";
+    string country = "Greece";
     string airportFile = "lib/dataSet/airports.dat";
     string routeFile = "lib/dataSet/routes.dat";
     bool found = false;
+    int order = 1;
     vector<Airport> test = readAirport(airportFile, country);
     vector<Edge> routes = readRoute(routeFile, country);
-    for (auto edge : routes) {
+    /*for (auto edge : routes) {
         cout << edge.source << " -> " << edge.dest << endl;
-    }
+    }*/
 
     for (unsigned int i = 0; i < test.size(); i++) {
-        if (test[i].id != "0") {
-            cout << "The first airport in " << country << " is: " << test[i].name << "." << endl;
+        if (test[i].country == country) {
+            cout << "The " << order << " st/nd/rd/th airport in " << country << " with ID: " <<
+            test[i].id << " is: " << test[i].name << " in " << test[i].city << " with IATA: " <<
+            test[i].IATA << " and ICAO: " << test[i].ICAO << "." << endl;
             found = true;
-            break;
+            order++;
         }
     }
     if (!found) {

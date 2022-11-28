@@ -21,21 +21,26 @@ vector<Airport> readAirport(string dataLocation, string country) {
             string curIATA;
             string curICAO;
             curID = line.substr(0, line.find(","));
-            line = line.substr(line.find("\"") + 1);
-            curName = line.substr(0, line.find("\""));
-            line = line.substr(line.find("\"") + 3);
-            curCity = line.substr(0, line.find("\""));
-            line = line.substr(line.find("\"") + 3);
-            curCountry = line.substr(0, line.find("\""));
+            line = line.substr(line.find(",") + 1);
+            curName = line.substr(0, line.find(","));
+            curName = formatString(curName);
+            line = line.substr(line.find(",") + 1);
+            curCity = line.substr(0, line.find(","));
+            curCity = formatString(curCity);
+            line = line.substr(line.find(",") + 1);
+            curCountry = line.substr(0, line.find(","));
+            curCountry = formatString(curCountry);
             if (curCountry != country) {
                 a = Airport{"0", "", "", "", "", ""};
                 airports.push_back(a);
                 continue;
             }
-            line = line.substr(line.find("\"") + 3);
-            curIATA = line.substr(0, line.find("\""));
-            line = line.substr(line.find("\"") + 3);
-            curICAO = line.substr(0, line.find("\""));
+            line = line.substr(line.find(",") + 1);
+            curIATA = line.substr(0, line.find(","));
+            curIATA = formatString(curIATA);
+            line = line.substr(line.find(",") + 1);
+            curICAO = line.substr(0, line.find(","));
+            curICAO = formatString(curICAO);
             a = Airport{curID, curName, curCity, curCountry, curIATA, curICAO};
             airports.push_back(a);
         }
@@ -65,11 +70,26 @@ vector<Edge> readRoute(string dataLocation, string country) {
             line = line.substr(line.find(",") + 1);
             dest = line.substr(0, line.find(","));
             // Push
-            e = Edge{source, dest};
-            routes.push_back(e);
+            if (source != "\\N" && dest != "\\N") {
+                e = Edge{source, dest};
+                routes.push_back(e);
+            }
         }
     } else {
         throw runtime_error("Could not open file.");
     }
     return routes;
+}
+
+string formatString(string str) {
+    if (str.length() >= 3) {
+        str = str.substr(1, str.length() - 2);
+        size_t pos = str.find("\"\"");
+        while (pos != string::npos) {
+            str.replace(pos, 2, "\"");
+            pos++;
+            pos = str.find("\"\"", pos);
+        }
+    }
+    return str;
 }
