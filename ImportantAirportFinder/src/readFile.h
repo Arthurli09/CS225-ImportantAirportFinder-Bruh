@@ -13,6 +13,7 @@ struct Airport {
     string country;
     string IATA;
     string ICAO;
+    int betweeness;
 };
 
 struct Edge {

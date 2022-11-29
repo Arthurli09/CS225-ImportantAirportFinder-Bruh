@@ -9,4 +9,4 @@ bin/exec: src/main.cpp src/readFile.cpp src/graph.cpp
 .PHONY: exec clean
 
 clean:
-	rm -f bin/*
+	rm -f bin/exec
