@@ -3,16 +3,16 @@
 #include <vector>
 #include <fstream>
 #include <exception>
+#include <iostream>
 
 using namespace std;
 
 struct Airport {
     string id;
     string name;
-    string city;
     string country;
-    string IATA;
-    string ICAO;
+    double latitude;
+    double longitude;
     int betweeness;
 };
 
