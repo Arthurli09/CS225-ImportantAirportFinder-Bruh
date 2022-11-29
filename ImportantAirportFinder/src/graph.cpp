@@ -1,4 +1,6 @@
-#include "graph.h"
+#include "includes/graph.h"
+
+using namespace std;
 
 Graph::Graph(vector<Airport> airports, vector<Edge> routes) {
     for (auto airport : airports) {
@@ -28,6 +30,39 @@ double Graph::calDistance(double lat1, double lat2, double long1, double long2) 
     return result;
 }
 
+
 vector<string> Graph::getVertices() {
     return vertices_;
 }
+
+set<string> Graph::getShortestPath(string source, string dest) {
+    set<string> path;
+    set<string> visited;
+    priority_queue<pair<string, int>> queue;
+    map<string, string> previous;
+
+    for(string airport : vertices_) {
+        pair<string, int> pair;
+        pair.first = airport;
+        pair.second = 2147483647;
+        if (airport == source) {
+            pair.second = 0;
+        }
+    } 
+
+    while(queue.top().first != dest) {
+        string current_airport = queue.top().first;
+        vector<string> neighbours = adjList[current_airport];
+        for(string neighbour : neighbours) {
+            if (visited.count(neighbour) > 0) {
+                continue;
+            }
+            visited.insert(neighbour);
+            previous[neighbour] = current_airport;
+        }
+    }   
+
+    return path;
+}
+
+
