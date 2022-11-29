@@ -2,7 +2,7 @@
 
 vector<Airport> readAirport(string dataLocation, string country) {
     vector<Airport> airports;
-    Airport holder = Airport{"0", "", "", "", "", ""};
+    Airport holder = Airport{"0", "", "", 0, 0, 0};
     airports.push_back(holder);
     ifstream file;
     /*
@@ -16,32 +16,36 @@ vector<Airport> readAirport(string dataLocation, string country) {
             Airport a;
             string curID;
             string curName;
-            string curCity;
             string curCountry;
-            string curIATA;
-            string curICAO;
+            double latitude;
+            double longitude;
+            // getID
             curID = line.substr(0, line.find(","));
             line = line.substr(line.find(",") + 1);
+            // getName
             curName = line.substr(0, line.find(","));
             curName = formatString(curName);
             line = line.substr(line.find(",") + 1);
-            curCity = line.substr(0, line.find(","));
-            curCity = formatString(curCity);
+            // Skip
             line = line.substr(line.find(",") + 1);
+            // getCountry
             curCountry = line.substr(0, line.find(","));
             curCountry = formatString(curCountry);
             if (curCountry != country) {
-                a = Airport{"0", "", "", "", "", ""};
+                a = Airport{"0", "", "", 0, 0, 0};
                 airports.push_back(a);  
                 continue;
             }
             line = line.substr(line.find(",") + 1);
-            curIATA = line.substr(0, line.find(","));
-            curIATA = formatString(curIATA);
+            // Skip
             line = line.substr(line.find(",") + 1);
-            curICAO = line.substr(0, line.find(","));
-            curICAO = formatString(curICAO);
-            a = Airport{curID, curName, curCity, curCountry, curIATA, curICAO};
+            line = line.substr(line.find(",") + 1);
+            // getLatitude
+            latitude = stod(line.substr(0, line.find(",")));
+            line = line.substr(line.find(",") + 1);
+            // getLongitude
+            longitude = stod(line.substr(0, line.find(",")));
+            a = Airport{curID, curName, curCountry, latitude, longitude, 0};
             airports.push_back(a);
         }
     } else {
