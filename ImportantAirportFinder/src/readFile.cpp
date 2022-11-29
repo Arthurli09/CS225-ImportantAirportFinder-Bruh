@@ -32,7 +32,7 @@ vector<Airport> readAirport(string dataLocation, string country) {
             curCountry = formatString(curCountry);
             if (curCountry != country) {
                 a = Airport{"0", "", "", "", "", ""};
-                airports.push_back(a);
+                airports.push_back(a);  
                 continue;
             }
             line = line.substr(line.find(",") + 1);
