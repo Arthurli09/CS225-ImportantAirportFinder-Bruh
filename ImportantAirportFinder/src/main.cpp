@@ -37,8 +37,8 @@ int main() {
     for (unsigned int i = 0; i < test.size(); i++) {
         if (test[i].country == country) {
             cout << "The " << order << " st/nd/rd/th airport in " << country << " with ID: " <<
-            test[i].id << " is: " << test[i].name << " in " << test[i].city << " with IATA: " <<
-            test[i].IATA << " and ICAO: " << test[i].ICAO << "." << endl;
+            test[i].id << " is: " << test[i].name << " and the latitude is " << test[i].latitude << " with longitude: " <<
+            test[i].longitude << "." << endl;
             found = true;
             order++;
         }
