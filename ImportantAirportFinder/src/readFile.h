@@ -19,6 +19,7 @@ struct Airport {
 struct Edge {
     string source;
     string dest;
+    double weight;
 };
 
 vector<Airport> readAirport(string dataLocation, string country);

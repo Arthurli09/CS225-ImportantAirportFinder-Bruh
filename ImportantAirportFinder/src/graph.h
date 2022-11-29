@@ -13,6 +13,7 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <math.h>
 
 
 #include "readFile.h"
@@ -21,9 +22,11 @@ using namespace std;
 class Graph {
 public:
     Graph(vector<Airport> airports, vector<Edge> routes);
-    void addEdge(string source, string dest);
+    void addEdge(Edge route);
     vector<string> getVertices();
 private:
-    vector<string> airportIDs;
-    unordered_map<string,vector<string>> adjList;
+    vector<string> vertices_;
+    vector<Airport> all_airports;
+    unordered_map<string,vector<pair<string, double>>> adjList;
+    double calDistance(double lat1, double lat2, double long1, double long2);
 };
