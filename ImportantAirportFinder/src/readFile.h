@@ -13,6 +13,14 @@ struct Airport {
     string country;
     string IATA;
     string ICAO;
+    int betweeness;
 };
 
-vector<Airport> readFile(string file);
+struct Edge {
+    string source;
+    string dest;
+};
+
+vector<Airport> readAirport(string dataLocation, string country);
+vector<Edge> readRoute(string dataLocation, string country);
+string formatString(string str);
