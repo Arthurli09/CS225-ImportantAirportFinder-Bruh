@@ -13,6 +13,8 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <queue>
+#include <map>
 
 
 #include "readFile.h"
@@ -23,7 +25,16 @@ public:
     Graph(vector<Airport> airports, vector<Edge> routes);
     void addEdge(string source, string dest);
     vector<string> getVertices();
+    set<string> getShortestPath(string source, string dest);
+    
 private:
     vector<string> airportIDs;
     unordered_map<string,vector<string>> adjList;
 };
+
+bool operator< (pair<string, int> a, pair<string, int> b) {
+    if (a.second < b.second) {
+        return true;
+    }
+    return false;
+}
