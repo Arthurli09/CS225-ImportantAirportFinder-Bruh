@@ -5,22 +5,24 @@ using namespace std;
 Graph::Graph(vector<Airport> airports, vector<Edge> routes) {
     for (auto airport : airports) {
         vertices_.push_back(airport.id);
-        all_airports[stoi(airport.id)] = airport;
-    }    
+    }
+    all_airports = airports;    
     for (auto route : routes) {
+        cout << route.source << endl;
+        cout << route.dest << endl;
         addEdge(route);
     }
 }
 
 void Graph::addEdge(Edge route) {    // add edge and set weight based on the distance
     double lat1 = all_airports[stoi(route.source)].latitude;
-    cout << "get s.la" << endl;
+    //cout << "get s.la" << endl;
     double long1 = all_airports[stoi(route.source)].longitude;
-    cout << "get s.lo" << endl;
+    //cout << "get s.lo" << endl;
     double lat2 = all_airports[stoi(route.dest)].latitude;
-    cout << "get d.la" << endl;
+    //cout << "get d.la" << endl;
     double long2 = all_airports[stoi(route.dest)].longitude;
-    cout << "get d.lo" << endl;
+    //cout << "get d.lo" << endl;
     route.weight = calDistance(lat1, lat2, long1, long2);
     adjList[route.source].push_back(pair<string, double>(route.source, route.weight));
 }
