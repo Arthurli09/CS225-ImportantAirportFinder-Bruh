@@ -8,10 +8,12 @@
 #include "readFile.h"
 #include "graph.h"
 
-TEST_CASE("Testing test case", "[part=1]") {
-    int a = 1;
-    int b = 1;
-    REQUIRE(a == b);
+TEST_CASE("Testing weird input", "[part=1]") {
+    string country = "Germany";
+    string airportFile = "lib/testSet/testAirport.dat";
+    vector<Airport> GermanyAirports = readAirport(airportFile, country);
+    REQUIRE(GermanyAirports.size() == 333);
+    REQUIRE(GermanyAirports[332].name == "Magdeburg \"City\" Airport");
 }
 
 TEST_CASE("Testing reading airports (in Greece)", "[part=1]") {
@@ -32,3 +34,32 @@ TEST_CASE("Testing reading routes", "[part=1]") {
     vector<Edge> routes = readRoute(routeFile, country);
     REQUIRE(routes.size() == 67240);
 }
+
+TEST_CASE("Testing Dijkstra", "[part=1]") {
+    Graph g = Graph();
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+    g.addVertex("F");
+    g.addVertex("G");
+
+    g.addEdge("A", "B", 5);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 1);
+    g.addEdge("B", "E", 6);
+    g.addEdge("C", "D", 6);
+    g.addEdge("C", "F", 8);
+    g.addEdge("D", "E", 1);
+    g.addEdge("D", "F", 2);
+    g.addEdge("E", "G", 7);
+    g.addEdge("F", "G", 3);
+
+    std::string path_s = "";
+    vector<string> path = g.getShortestPath("A", "G");
+    for (auto &i : path) {
+      path_s += i;
+    }
+    REQUIRE(path_s == "ABDFG");
+    }
