@@ -31,29 +31,31 @@ int main() {
     int order = 1;
     vector<Airport> test = readAirport(airportFile, country);
     vector<Edge> routes = readRoute(routeFile, country);
-    // for (auto edge : routes) {
-    //     cout << edge.source << " -> " << edge.dest << endl;
-    // }
 
-    // for (unsigned int i = 0; i < test.size(); i++) {
-    //     if (test[i].country == country) {
-    //         cout << "The " << order << " st/nd/rd/th airport in " << country << " with ID: " <<
-    //         test[i].id << " is: " << test[i].name << " and the latitude is " << test[i].latitude << " with longitude: " <<
-    //         test[i].longitude << "." << endl;
-    //         found = true;
-    //         order++;
-    //     }
-    // }
-    // if (!found) {
-    //     cout << "No airport found with the given country." << endl;
-    // }
-    Graph graph = Graph(test, routes);
+    for (auto edge : routes) {
+        cout << edge.source << " -> " << edge.dest << endl;
+    }
+
+    for (unsigned int i = 0; i < test.size(); i++) {
+        if (test[i].country == country) {
+            cout << "The " << order << " st/nd/rd/th airport in " << country << " with ID: " << test[i].id <<
+            " at " << i << " st/nd/rd/th position in the airports vector is: " << test[i].name <<
+            " with latitude " << test[i].latitude << " and longitude: " << test[i].longitude << "." << endl;
+            found = true;
+            order++;
+        }
+    }
+    if (!found) {
+        cout << "No airport found with the given country." << endl;
+    }
+
+    /*Graph graph = Graph(test, routes);
     
     vector<string> path = graph.getShortestPath("1444", "1455");
 
     for (string airport_id : path) {
         cout << airport_id << endl;
-    }
+    }*/
 
 
     return 0;

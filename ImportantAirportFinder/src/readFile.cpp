@@ -12,6 +12,7 @@ vector<Airport> readAirport(string dataLocation, string country) {
     file.open(dataLocation);
     if (file.is_open()) {
         string line;
+        int count = 1;
         while (getline(file, line)) {
             Airport a;
             string curID;
@@ -19,6 +20,7 @@ vector<Airport> readAirport(string dataLocation, string country) {
             string curCountry;
             double latitude;
             double longitude;
+            int numID;
             // getID
             curID = line.substr(0, line.find(","));
             line = line.substr(line.find(",") + 1);
@@ -32,8 +34,8 @@ vector<Airport> readAirport(string dataLocation, string country) {
             curCountry = line.substr(0, line.find(","));
             curCountry = formatString(curCountry);
             if (curCountry != country) {
-                a = Airport{"0", "", "", 0, 0, 0};
-                airports.push_back(a);  
+                airports.push_back(holder);
+                count++;
                 continue;
             }
             line = line.substr(line.find(",") + 1);
@@ -45,8 +47,15 @@ vector<Airport> readAirport(string dataLocation, string country) {
             line = line.substr(line.find(",") + 1);
             // getLongitude
             longitude = stod(line.substr(0, line.find(",")));
+            numID = stoi(curID);
+            if (numID > count) {
+                for (; count < numID; count++) {
+                    airports.push_back(holder);
+                }
+            }
             a = Airport{curID, curName, curCountry, latitude, longitude, 0};
             airports.push_back(a);
+            count++;
         }
     } else {
         throw runtime_error("Could not open file.");
