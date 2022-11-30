@@ -1,12 +1,12 @@
-#include "includes/graph.h"
+#include "graph.h"
 
 using namespace std;
 
 Graph::Graph(vector<Airport> airports, vector<Edge> routes) {
     for (auto airport : airports) {
         vertices_.push_back(airport.id);
-        all_airports.push_back(airport);
-    }
+        all_airports[stoi(airport.id)] = airport;
+    }    
     for (auto route : routes) {
         addEdge(route);
     }
@@ -14,9 +14,13 @@ Graph::Graph(vector<Airport> airports, vector<Edge> routes) {
 
 void Graph::addEdge(Edge route) {    // add edge and set weight based on the distance
     double lat1 = all_airports[stoi(route.source)].latitude;
+    cout << "get s.la" << endl;
     double long1 = all_airports[stoi(route.source)].longitude;
+    cout << "get s.lo" << endl;
     double lat2 = all_airports[stoi(route.dest)].latitude;
+    cout << "get d.la" << endl;
     double long2 = all_airports[stoi(route.dest)].longitude;
+    cout << "get d.lo" << endl;
     route.weight = calDistance(lat1, lat2, long1, long2);
     adjList[route.source].push_back(pair<string, double>(route.source, route.weight));
 }
@@ -35,34 +39,60 @@ vector<string> Graph::getVertices() {
     return vertices_;
 }
 
-set<string> Graph::getShortestPath(string source, string dest) {
-    set<string> path;
-    set<string> visited;
-    priority_queue<pair<string, int>> queue;
-    map<string, string> previous;
+vector<string> Graph::getShortestPath(const string &source, const string &dest) {
+  // initialize
+  unordered_map<string, double> d; // distance
+  unordered_map<string, string> p; // previous
+  for (auto &v : vertices_) {
+    d[v] = numeric_limits<double>::infinity(); // set distance to +infinity
+    p[v] = "";                                 // empty string means null
+  }
+  d[source] = 0; // set distance to source to 0
 
-    for(string airport : vertices_) {
-        pair<string, int> pair;
-        pair.first = airport;
-        pair.second = 2147483647;
-        if (airport == source) {
-            pair.second = 0;
-        }
-    } 
+  // min distance priority queue, defined by d[v]
+  priority_queue<pair<string, double>, vector<pair<string, double>>, greater<pair<string, double>>> Q;
 
-    while(queue.top().first != dest) {
-        string current_airport = queue.top().first;
-        vector<string> neighbours = adjList[current_airport];
-        for(string neighbour : neighbours) {
-            if (visited.count(neighbour) > 0) {
-                continue;
-            }
-            visited.insert(neighbour);
-            previous[neighbour] = current_airport;
-        }
-    }   
+  // build heap
+  for (auto &v : vertices_) {
+    Q.push(pair<string, double>(v, d[v]));
+  }
 
-    return path;
+  // labeled set
+  set<string> T;
+
+  // repeat n times, n is the number of vertices
+  for (int i = 0; i < vertices_.size(); i++) {
+    // remove min
+    string u = Q.top().first;
+    Q.pop();
+
+    // add u to T
+    T.insert(u);
+
+    // for each neighbor v of u not in T
+    for (auto &v : adjList[u]) {
+      if (T.find(v.first) != T.end()) continue;
+
+      // if cost(u, v) + d[u] < d[v]
+      if (v.second + d[u] < d[v.first]) {
+        // update d[v] to cost(u, v) + d[u]
+        d[v.first] = v.second + d[u];
+        // update p[v]
+        p[v.first] = u;
+      }
+    }
+  }
+
+  // build shortest path
+  vector<string> path;
+  string u = dest;
+  while (u != "") {
+    path.push_back(u);
+    u = p[u];
+  }
+  reverse(path.begin(), path.end());
+  return path;
 }
+
 
 

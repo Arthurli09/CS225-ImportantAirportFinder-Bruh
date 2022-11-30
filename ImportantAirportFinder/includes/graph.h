@@ -16,6 +16,8 @@
 #include <queue>
 #include <map>
 #include <math.h>
+#include <limits>
+#include <iostream>
 
 
 #include "readFile.h"
@@ -26,7 +28,7 @@ public:
     Graph(vector<Airport> airports, vector<Edge> routes);
     void addEdge(Edge route);
     vector<string> getVertices();
-    set<string> getShortestPath(string source, string dest);
+    vector<string> getShortestPath(const string &source, const string &dest);
     
 private:
     vector<string> vertices_;
@@ -35,9 +37,9 @@ private:
     double calDistance(double lat1, double lat2, double long1, double long2);
 };
 
-bool operator< (pair<string, int> a, pair<string, int> b) {
-    if (a.second < b.second) {
-        return true;
-    }
-    return false;
-}
+// bool operator< (pair<string, int> a, pair<string, int> b) {
+//     if (a.second < b.second) {
+//         return true;
+//     }
+//     return false;
+// }
