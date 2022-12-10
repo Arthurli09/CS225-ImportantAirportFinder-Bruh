@@ -3,14 +3,23 @@
 using namespace std;
 
 Graph::Graph(vector<Airport> airports, vector<Edge> routes) {
-    for (auto airport : airports) {
-        vertices_.push_back(airport.id);
-    }
-    all_airports = airports;    
+    all_airports = airports;  
     for (auto route : routes) {
-        cout << route.source << endl;
-        cout << route.dest << endl;
-        addEdge(route);
+        //cout << route.source << endl;
+        //cout << route.dest << endl;
+        if (all_airports[stoi(route.source)].id != "0" || all_airports[stoi(route.dest)].id != "0") {
+          addEdge(route);
+          if (all_airports[stoi(route.source)].id == "0") {
+            all_airports[stoi(route.source)].id = route.source;
+          } else if (all_airports[stoi(route.dest)].id == "0") {
+            all_airports[stoi(route.dest)].id = route.dest;
+          }
+        }
+    }
+    for (auto airport : all_airports) {
+      if (airport.id != "0") {
+        vertices_.push_back(airport.id);
+      }
     }
 }
 

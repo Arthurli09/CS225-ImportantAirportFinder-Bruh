@@ -20,7 +20,7 @@ TEST_CASE("Testing reading airports (in Greece)", "[part=1]") {
     string country = "Greece";
     string airportFile = "lib/dataSet/airports.dat";
     vector<Airport> GreeceAirports = readAirport(airportFile, country);
-    REQUIRE(GreeceAirports.size() == 9357);
+    REQUIRE(GreeceAirports.size() == 14111);
     REQUIRE(GreeceAirports[0].name == "");
     REQUIRE(GreeceAirports[1].id == "0");
     REQUIRE(GreeceAirports[1444].name == "Andravida Air Base");
@@ -29,9 +29,8 @@ TEST_CASE("Testing reading airports (in Greece)", "[part=1]") {
 }
 
 TEST_CASE("Testing reading routes", "[part=1]") {
-    string country = "Greece";
     string routeFile = "lib/dataSet/routes.dat";
-    vector<Edge> routes = readRoute(routeFile, country);
+    vector<Edge> routes = readRoute(routeFile);
     REQUIRE(routes.size() == 67240);
 }
 
@@ -62,4 +61,4 @@ TEST_CASE("Testing Dijkstra", "[part=1]") {
       path_s += i;
     }
     REQUIRE(path_s == "ABDFG");
-    }
+}
