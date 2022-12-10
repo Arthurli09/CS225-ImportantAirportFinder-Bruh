@@ -21,23 +21,21 @@ vector<Airport> readAirport(string dataLocation, string country) {
             double latitude;
             double longitude;
             int numID;
+            size_t pos;
             // getID
             curID = line.substr(0, line.find(","));
             line = line.substr(line.find(",") + 1);
             // getName
-            curName = line.substr(0, line.find(","));
+            pos = getCorrectPos(line);
+            curName = line.substr(0, line.find(",", pos));
             curName = formatString(curName);
-            line = line.substr(line.find(",") + 1);
+            line = line.substr(line.find(",", pos) + 1);
             // Skip
-            line = line.substr(line.find(",") + 1);
+            pos = getCorrectPos(line);
+            line = line.substr(line.find(",", pos) + 1);
             // getCountry
             curCountry = line.substr(0, line.find(","));
             curCountry = formatString(curCountry);
-            if (curCountry != country) {
-                airports.push_back(holder);
-                count++;
-                continue;
-            }
             line = line.substr(line.find(",") + 1);
             // Skip
             line = line.substr(line.find(",") + 1);
@@ -53,8 +51,13 @@ vector<Airport> readAirport(string dataLocation, string country) {
                     airports.push_back(holder);
                 }
             }
-            a = Airport{curID, curName, curCountry, latitude, longitude, 0};
-            airports.push_back(a);
+            if (curCountry != country) {
+                a = Airport{"0", "", "", latitude, longitude, 0};
+                airports.push_back(a);
+            } else {
+                a = Airport{curID, curName, curCountry, latitude, longitude, 0};
+                airports.push_back(a);
+            }
             count++;
         }
     } else {
@@ -63,7 +66,7 @@ vector<Airport> readAirport(string dataLocation, string country) {
     return airports;
 }
 
-vector<Edge> readRoute(string dataLocation, string country) {
+vector<Edge> readRoute(string dataLocation) {
     vector<Edge> routes;
     ifstream file;
     file.open(dataLocation);
@@ -105,4 +108,12 @@ string formatString(string str) {
         }
     }
     return str;
+}
+
+size_t getCorrectPos(string str) {
+    size_t pos = 0;
+    while (str.find(",", pos) < str.find("\"", 1)) {
+        pos = str.find(",", pos) + 1;
+    }
+    return pos;
 }

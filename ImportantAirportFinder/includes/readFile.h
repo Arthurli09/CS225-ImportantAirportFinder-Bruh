@@ -24,5 +24,6 @@ struct Edge {
 };
 
 vector<Airport> readAirport(string dataLocation, string country);
-vector<Edge> readRoute(string dataLocation, string country);
+vector<Edge> readRoute(string dataLocation);
 string formatString(string str);
+size_t getCorrectPos(string str);
