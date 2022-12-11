@@ -39,7 +39,7 @@ void Graph::addEdge(Edge route) {    // add edge and set weight based on the dis
 double Graph::calDistance(double lat1, double lat2, double long1, double long2) {
     double dlat = ((M_PI) / 180 * lat2) - ((M_PI) / 180 * lat1);
     double dlong = ((M_PI) / 180 * long2) - ((M_PI) / 180 * long1);
-    double result = pow(sin(dlat / 2), 2) + cos(lat1) * cos(lat2) * pow(sin(dlong / 2), 2);
+    double result = pow(sin(dlat / 2), 2) + cos(lat1 * M_PI / 180) * cos(lat2 * M_PI / 180) * pow(sin(dlong / 2), 2);
     result = 2 * asin(sqrt(result));
     result *= 6371.0;
     return result;
@@ -59,12 +59,12 @@ vector<string> Graph::getShortestPathWeighted(const string &source, const string
   }
   d[source] = 0; // set distance to source to 0
 
-  // min distance priority queue, defined by d[v]
-  priority_queue<pair<string, double>, vector<pair<string, double>>, greater<pair<string, double>>> Q;
+  // min distance heap, defined by d[v]
+  priority_queue<pair<double, string>, vector<pair<double, string>>, greater<pair<double, string>>> Q;
 
   // build heap
   for (auto &v : vertices_) {
-    Q.push(pair<string, double>(v, d[v]));
+    Q.push(pair<double, string>(d[v], v));
   }
 
   // labeled set
@@ -73,7 +73,7 @@ vector<string> Graph::getShortestPathWeighted(const string &source, const string
   // repeat n times, n is the number of vertices
   for (int i = 0; i < vertices_.size(); i++) {
     // remove min
-    string u = Q.top().first;
+    string u = Q.top().second;
     Q.pop();
 
     // add u to T
@@ -89,6 +89,7 @@ vector<string> Graph::getShortestPathWeighted(const string &source, const string
         d[v.first] = v.second + d[u];
         // update p[v]
         p[v.first] = u;
+        Q.push(pair<double, string>(d[v.first], v.first));
       }
     }
   }
