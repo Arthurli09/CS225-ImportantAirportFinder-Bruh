@@ -56,9 +56,38 @@ TEST_CASE("Testing Dijkstra", "[part=1]") {
     g.addEdge("F", "G", 3);
 
     std::string path_s = "";
-    vector<string> path = g.getShortestPath("A", "G");
+    vector<string> path = g.getShortestPathWeighted("A", "G");
     for (auto &i : path) {
       path_s += i;
     }
     REQUIRE(path_s == "ABDFG");
+}
+
+TEST_CASE("Testing BFS", "[part=1]") {
+    Graph g = Graph();
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+    g.addVertex("F");
+    g.addVertex("G");
+
+    g.addEdge("A", "B", 5);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 1);
+    g.addEdge("B", "E", 6);
+    g.addEdge("C", "D", 6);
+    g.addEdge("C", "F", 8);
+    g.addEdge("D", "E", 1);
+    g.addEdge("D", "F", 2);
+    g.addEdge("E", "G", 7);
+    g.addEdge("F", "G", 3);
+
+    std::string path_s = "";
+    vector<string> path = g.getShortestPathUnweighted("A", "G");
+    for (auto &i : path) {
+      path_s += i;
+    }
+    REQUIRE(path_s == "ABEG");
 }

@@ -45,12 +45,11 @@ double Graph::calDistance(double lat1, double lat2, double long1, double long2) 
     return result;
 }
 
-
 vector<string> Graph::getVertices() {
     return vertices_;
 }
 
-vector<string> Graph::getShortestPath(const string &source, const string &dest) {
+vector<string> Graph::getShortestPathWeighted(const string &source, const string &dest) {
   // initialize
   unordered_map<string, double> d; // distance
   unordered_map<string, string> p; // previous
@@ -105,5 +104,51 @@ vector<string> Graph::getShortestPath(const string &source, const string &dest) 
   return path;
 }
 
+vector<string> Graph::getShortestPathUnweighted(const string &source, const string &dest) {
+  vector<string> path;
+  unordered_map<string, bool> visited;
+  unordered_map<string, string> prev;
+  for (auto &v : vertices_) {
+    visited[v] = false;
+  }
 
+  queue<string> q;
+  visited[source] = true;
+  q.push(source);
+  
+  while (!q.empty()) {
+    string cur = q.front();
+    q.pop();
+    
+    for (auto adjacent : adjList[cur]) {
+      string adj = adjacent.first;
 
+      if (adj == dest) {
+        prev[adj] = cur;
+        string airport = dest;
+        while (airport != "") {
+          path.push_back(airport);
+          airport = prev[airport];
+        }
+        reverse(path.begin(), path.end());
+        return path;
+      }
+
+      if (!visited[adj]) {
+        visited[adj] = true;
+        prev[adj] = cur;
+        q.push(adj);
+      }
+    }
+  }
+  return path;
+}
+
+void Graph::addVertex(const string &vertex) {
+  vertices_.push_back(vertex);
+}
+
+void Graph::addEdge(const string &source, const string &dest, double distance) {
+  adjList[source].push_back(pair<string, double>(dest, distance));
+  adjList[dest].push_back(pair<string, double>(source, distance));
+}
