@@ -8,8 +8,8 @@ tests: bin/tests
 bin/exec: entry/main.cpp src/readFile.cpp src/graph.cpp includes/readFile.h includes/graph.h 
 	$(CXX) $(CXX_FLAGS) $(INCLUDES) entry/main.cpp src/readFile.cpp src/graph.cpp -o $@
 
-bin/tests: tests/tests_part1.cpp src/readFile.cpp obj/catch.o src/graph.cpp includes/readFile.h includes/graph.h 
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) tests/tests_part1.cpp obj/catch.o src/readFile.cpp src/graph.cpp -o $@
+bin/tests: tests/tests.cpp src/readFile.cpp obj/catch.o src/graph.cpp includes/readFile.h includes/graph.h 
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) tests/tests.cpp obj/catch.o src/readFile.cpp src/graph.cpp -o $@
 
 obj/catch.o: tests/catch.cc
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $^ -o $@
