@@ -26,7 +26,7 @@ using namespace std;
 class Graph {
 public:
     Graph() = default;
-    Graph(vector<Airport> airports, vector<Edge> routes);
+    Graph(string country, string airportFile, string routeFile);
     
     void addEdge(Edge route);
     vector<string> getVertices();
@@ -36,6 +36,10 @@ public:
     void addVertex(const string &vertex);
     // add edge and set weight based on the distance
     void addEdge(const string &source, const string &dest, double distance);
+    string getMostImportantAirport();
+    string getMostImportantAirport(double dijkstraWeight, double bfsWeight);
+    void calcBetweennessCentrality();
+    void calcBetweennessCentrality(double dijkstraWeight, double bfsWeight);
 private:
     vector<string> vertices_;
     vector<Airport> all_airports;

@@ -20,7 +20,7 @@ TEST_CASE("Testing reading airports (in Greece)", "[part=1]") {
     string country = "Greece";
     string airportFile = "lib/dataSet/airports.dat";
     vector<Airport> GreeceAirports = readAirport(airportFile, country);
-    REQUIRE(GreeceAirports.size() == 14111);
+    REQUIRE(GreeceAirports.size() == 9357);
     REQUIRE(GreeceAirports[0].name == "");
     REQUIRE(GreeceAirports[1].id == "0");
     REQUIRE(GreeceAirports[1444].name == "Andravida Air Base");

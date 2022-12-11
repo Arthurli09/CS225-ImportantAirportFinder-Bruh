@@ -2,24 +2,20 @@
 
 using namespace std;
 
-Graph::Graph(vector<Airport> airports, vector<Edge> routes) {
-    all_airports = airports;  
-    for (auto route : routes) {
-        //cout << route.source << endl;
-        //cout << route.dest << endl;
-        if (all_airports[stoi(route.source)].id != "0" || all_airports[stoi(route.dest)].id != "0") {
-          addEdge(route);
-          if (all_airports[stoi(route.source)].id == "0") {
-            all_airports[stoi(route.source)].id = route.source;
-          } else if (all_airports[stoi(route.dest)].id == "0") {
-            all_airports[stoi(route.dest)].id = route.dest;
-          }
-        }
-    }
+Graph::Graph(string country, string airportFile, string routeFile) {
+    all_airports = readAirport(airportFile, country);
+    vector<Edge> routes = readRoute(routeFile);
     for (auto airport : all_airports) {
       if (airport.id != "0") {
         vertices_.push_back(airport.id);
       }
+    }
+    for (auto route : routes) {
+        //cout << route.source << endl;
+        //cout << route.dest << endl;
+        if (all_airports[stoi(route.source)].id != "0" && all_airports[stoi(route.dest)].id != "0") {
+          addEdge(route);
+        }
     }
 }
 
@@ -151,4 +147,86 @@ void Graph::addVertex(const string &vertex) {
 void Graph::addEdge(const string &source, const string &dest, double distance) {
   adjList[source].push_back(pair<string, double>(dest, distance));
   adjList[dest].push_back(pair<string, double>(source, distance));
+}
+
+string Graph::getMostImportantAirport() {
+  cout << "Starting to calculate betweenness." << endl;
+  calcBetweennessCentrality();
+  cout << "Finished calculating betweenness." << endl;
+  
+  double maxBetweenness = 0;
+  string mostImportantAirport = ""; 
+  for (unsigned int i = 0; i < vertices_.size(); i++) {
+    if (all_airports[stoi(vertices_[i])].betweeness > maxBetweenness) {
+      maxBetweenness = all_airports[stoi(vertices_[i])].betweeness;
+      mostImportantAirport = all_airports[stoi(vertices_[i])].name;
+    }
+  }
+  return mostImportantAirport;
+}
+
+string Graph::getMostImportantAirport(double dijkstraWeight, double bfsWeight) {
+  if ((dijkstraWeight + bfsWeight) != 1) {
+    cout << "The weights must add up to 1." << endl;
+    return "";
+  }
+
+  calcBetweennessCentrality(dijkstraWeight, bfsWeight);
+  
+  double maxBetweenness = 0;
+  string mostImportantAirport = ""; 
+  for (unsigned int i = 0; i < vertices_.size(); i++) {
+    if (all_airports[stoi(vertices_[i])].betweeness > maxBetweenness) {
+      maxBetweenness = all_airports[stoi(vertices_[i])].betweeness;
+      mostImportantAirport = all_airports[stoi(vertices_[i])].name;
+    }
+  }
+  return mostImportantAirport;
+}
+
+void Graph::calcBetweennessCentrality() {
+  unordered_map<string, int> bt;
+  cout << vertices_.size() << endl;
+  for (unsigned int i = 0; i < vertices_.size() - 1; i++) {
+    for (unsigned int j = i + 1; j < vertices_.size(); j++) {
+      cout << i << " " << j << endl;
+      vector<string> pathWeighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
+      //vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
+      for (unsigned int k = 0; k < pathWeighted.size(); k++) {
+        bt[pathWeighted[k]]++;
+      }
+      /*for (unsigned int k = 0; k < pathUnweighted.size(); k++) {
+        bt[pathUnweighted[k]]++;
+      }*/
+    }
+  }
+
+  for (auto a : bt) {
+    all_airports[stoi(a.first)].betweeness = a.second;
+  }
+}
+
+void Graph::calcBetweennessCentrality(double dijkstraWeight, double bfsWeight) {
+  if ((dijkstraWeight + bfsWeight) != 1) {
+    cout << "The weights must add up to 1." << endl;
+    return;
+  }
+
+  unordered_map<string, int> bt;
+  for (unsigned int i = 0; i < vertices_.size() - 1; i++) {
+    for (unsigned int j = 0; j < vertices_.size(); j++) {
+      vector<string> pathWeighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
+      vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
+      for (unsigned int k = 0; k < pathWeighted.size(); k++) {
+        bt[pathWeighted[k]] += dijkstraWeight;
+      }
+      for (unsigned int k = 0; k < pathUnweighted.size(); k++) {
+        bt[pathUnweighted[k]] += bfsWeight;
+      }
+    }
+  }
+
+  for (auto a : bt) {
+    all_airports[stoi(a.first)].betweeness = a.second;
+  }
 }

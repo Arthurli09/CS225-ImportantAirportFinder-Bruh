@@ -31,12 +31,14 @@ int main() {
     int order = 1;
     vector<Airport> test = readAirport(airportFile, country);
     vector<Edge> routes = readRoute(routeFile);
-    Graph graph = Graph(test, routes);
+    Graph graph = Graph(country, airportFile, routeFile);
 
-    vector<string> vertices = graph.getVertices();
+    cout << graph.getMostImportantAirport() << endl;
+
+    /*vector<string> vertices = graph.getVertices();
     for (unsigned int i = 0; i < 1200; i++) {
         cout << vertices[i] << endl;
-    }
+    }*/
 
     /*for (auto edge : routes) {
         cout << edge.source << " -> " << edge.dest << endl;
