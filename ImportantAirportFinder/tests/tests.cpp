@@ -8,7 +8,7 @@
 #include "readFile.h"
 #include "graph.h"
 
-TEST_CASE("Testing weird input", "[part=1]") {
+TEST_CASE("Testing input with double quotation marks", "[part=1]") {
     string country = "Germany";
     string airportFile = "lib/testSet/testAirport.dat";
     vector<Airport> GermanyAirports = readAirport(airportFile, country);
@@ -16,21 +16,23 @@ TEST_CASE("Testing weird input", "[part=1]") {
     REQUIRE(GermanyAirports[332].name == "Magdeburg \"City\" Airport");
 }
 
-TEST_CASE("Testing reading airports (in Greece)", "[part=1]") {
-    string country = "Greece";
-    string airportFile = "lib/dataSet/airports.dat";
-    vector<Airport> GreeceAirports = readAirport(airportFile, country);
-    REQUIRE(GreeceAirports.size() == 14111);
-    REQUIRE(GreeceAirports[0].name == "");
-    REQUIRE(GreeceAirports[1].id == "0");
-    REQUIRE(GreeceAirports[1444].name == "Andravida Air Base");
-    REQUIRE(GreeceAirports[1488].name == "Zakynthos International Airport \"Dionysios Solomos\"");
-    REQUIRE(GreeceAirports[6887].latitude == 37.297501);
+TEST_CASE("Testing input with commas", "[part=1]") {
+    string country = "Germany";
+    string airportFile = "lib/testSet/testAirport2.dat";
+    vector<Airport> GermanyAirports = readAirport(airportFile, country);
+    REQUIRE(GermanyAirports.size() == 333);
+    REQUIRE(GermanyAirports[332].name == "This, is, cringe");
+    REQUIRE(GermanyAirports[1].id == "0");
+    REQUIRE(GermanyAirports[317].latitude == 51.193611);
+    REQUIRE(GermanyAirports[317].longitude == 14.519722);
 }
 
-TEST_CASE("Testing reading routes", "[part=1]") {
+TEST_CASE("Testing routes with null id", "[part=1]") {
     string routeFile = "lib/dataSet/routes.dat";
+    string testRoute = "lib/testSet/testRoute.dat";
     vector<Edge> routes = readRoute(routeFile);
+    vector<Edge> routes2 = readRoute(testRoute);
+    REQUIRE(routes2.size() == 0);
     REQUIRE(routes.size() == 67240);
 }
 
