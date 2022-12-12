@@ -14,7 +14,7 @@ struct Airport {
     string country;
     double latitude;
     double longitude;
-    int betweeness;
+    double betweeness;
 };
 
 struct Edge {

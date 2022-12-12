@@ -36,6 +36,11 @@ vector<Airport> readAirport(string dataLocation, string country) {
             // getCountry
             curCountry = line.substr(0, line.find(","));
             curCountry = formatString(curCountry);
+            if (curCountry != country) {
+                airports.push_back(holder);
+                count++;
+                continue;
+            }
             line = line.substr(line.find(",") + 1);
             // Skip
             line = line.substr(line.find(",") + 1);
@@ -51,13 +56,8 @@ vector<Airport> readAirport(string dataLocation, string country) {
                     airports.push_back(holder);
                 }
             }
-            if (curCountry != country) {
-                a = Airport{"0", "", "", latitude, longitude, 0};
-                airports.push_back(a);
-            } else {
-                a = Airport{curID, curName, curCountry, latitude, longitude, 0};
-                airports.push_back(a);
-            }
+            a = Airport{curID, curName, curCountry, latitude, longitude, 0};
+            airports.push_back(a);
             count++;
         }
     } else {
