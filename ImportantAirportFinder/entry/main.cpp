@@ -24,7 +24,7 @@ using namespace std;
 */
 
 int main() {
-    string country = "United Kingdom";
+    string country = "Papua New Guinea";
     string airportFile = "lib/dataSet/airports.dat";
     string routeFile = "lib/dataSet/routes.dat";
     bool found = false;
@@ -33,7 +33,8 @@ int main() {
     vector<Edge> routes = readRoute(routeFile);
     Graph graph = Graph(country, airportFile, routeFile);
 
-    cout << graph.getMostImportantAirport() << endl;
+    cout << graph.getMostImportantAirport(0, 1) << endl;
+    cout << graph.getMostImportantAirport(1, 0) << endl;
 
     /*vector<string> vertices = graph.getVertices();
     for (unsigned int i = 0; i < 1200; i++) {

@@ -175,7 +175,7 @@ string Graph::getMostImportantAirport(double dijkstraWeight, double bfsWeight) {
   calcBetweennessCentrality(dijkstraWeight, bfsWeight);
   
   double maxBetweenness = 0;
-  string mostImportantAirport = ""; 
+  string mostImportantAirport = "";
   for (unsigned int i = 0; i < vertices_.size(); i++) {
     if (all_airports[stoi(vertices_[i])].betweeness > maxBetweenness) {
       maxBetweenness = all_airports[stoi(vertices_[i])].betweeness;
@@ -186,19 +186,19 @@ string Graph::getMostImportantAirport(double dijkstraWeight, double bfsWeight) {
 }
 
 void Graph::calcBetweennessCentrality() {
-  unordered_map<string, int> bt;
-  cout << vertices_.size() << endl;
+  unordered_map<string, double> bt;
+  //cout << vertices_.size() << endl;
   for (unsigned int i = 0; i < vertices_.size() - 1; i++) {
     for (unsigned int j = i + 1; j < vertices_.size(); j++) {
-      cout << i << " " << j << endl;
+      //cout << i << " " << j << endl;
       vector<string> pathWeighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
-      //vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
+      vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
       for (unsigned int k = 0; k < pathWeighted.size(); k++) {
         bt[pathWeighted[k]]++;
       }
-      /*for (unsigned int k = 0; k < pathUnweighted.size(); k++) {
+      for (unsigned int k = 0; k < pathUnweighted.size(); k++) {
         bt[pathUnweighted[k]]++;
-      }*/
+      }
     }
   }
 
@@ -213,9 +213,9 @@ void Graph::calcBetweennessCentrality(double dijkstraWeight, double bfsWeight) {
     return;
   }
 
-  unordered_map<string, int> bt;
+  unordered_map<string, double> bt;
   for (unsigned int i = 0; i < vertices_.size() - 1; i++) {
-    for (unsigned int j = 0; j < vertices_.size(); j++) {
+    for (unsigned int j = i + 1; j < vertices_.size(); j++) {
       vector<string> pathWeighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
       vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
       for (unsigned int k = 0; k < pathWeighted.size(); k++) {
