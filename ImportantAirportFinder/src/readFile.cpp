@@ -5,10 +5,6 @@ vector<Airport> readAirport(string dataLocation, string country) {
     Airport holder = Airport{"0", "", "", 0, 0, 0};
     airports.push_back(holder);
     ifstream file;
-    /*
-        If you are in the ImportantAirportFinder directory already,
-        use ./lib/dataSet/airports.dat instead
-    */
     file.open(dataLocation);
     if (file.is_open()) {
         string line;
@@ -59,6 +55,10 @@ vector<Airport> readAirport(string dataLocation, string country) {
             a = Airport{curID, curName, curCountry, latitude, longitude, 0};
             airports.push_back(a);
             count++;
+        }
+        if (airports.size() == 0) {
+            cout << "The provided country does not match any country in the dataset, please try again." << endl;
+            cout << "(Suggestion: Try spelling the country's full name (e.g. UK -> United Kingdom.))" << endl;
         }
     } else {
         throw runtime_error("Could not open file.");

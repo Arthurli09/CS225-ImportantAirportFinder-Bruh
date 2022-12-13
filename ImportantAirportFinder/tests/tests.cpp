@@ -9,6 +9,24 @@
 #include "readFile.h"
 #include "graph.h"
 
+TEST_CASE("Testing reading airports (in Greece)", "[part=1]") {
+    string country = "Greece";
+    string airportFile = "lib/dataSet/airports.dat";
+    vector<Airport> GreeceAirports = readAirport(airportFile, country);
+    REQUIRE(GreeceAirports.size() == 9357);
+    REQUIRE(GreeceAirports[0].name == "");
+    REQUIRE(GreeceAirports[1].id == "0");
+    REQUIRE(GreeceAirports[1444].name == "Andravida Air Base");
+    REQUIRE(GreeceAirports[1488].name == "Zakynthos International Airport \"Dionysios Solomos\"");
+    REQUIRE(GreeceAirports[6887].latitude == 37.297501);
+}
+
+TEST_CASE("Testing reading routes", "[part=1]") {
+    string routeFile = "lib/dataSet/routes.dat";
+    vector<Edge> routes = readRoute(routeFile);
+    REQUIRE(routes.size() == 67240);
+}
+
 TEST_CASE("Testing input with double quotation marks", "[part=1]") {
     string country = "Germany";
     string airportFile = "lib/testSet/testAirport.dat";

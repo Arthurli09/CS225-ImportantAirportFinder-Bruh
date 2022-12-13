@@ -5,6 +5,9 @@
 using namespace std;
 
 /*
+    Note: This is an early stage temporary compilation method, it is recommended to use Makefile
+          to compile.
+    
     To compile, use one of the two ways:
 
     Way #1 (tested): make sure the current directory is the directory that includes all of the files
@@ -23,47 +26,59 @@ using namespace std;
     in the command will generate an warning.
 */
 
+/*
+    User guide for using the MostImportantAirportFinder:
+        1. Specify the country for searching the most important airport in.
+            a. Change the string behind the "country" variable.
+
+        2. Specify the airport file and route file as datasets for the algorithm.
+            a. Change the string behind the "airportFile" variable and the "routeFile" variable.
+
+        3-1. If planning to use the default getMostImportantAirportFinder function
+             (where the weights are 0.5, 0.5), use getMostImportantAirport().
+
+        3-2. If planning to use the weighted getMostImportantAirportFinder function
+             (where the weights are specified in the parameter), add weights in the
+             getMostImportantAirport() funtion
+             (i.e. use getMostImportantAirport(double dijkstraWeight, double bfsWeight)).
+
+        PS: Explanation of the weights:
+            Betweennes centrality for an airport is based on how many times an airport in
+            a specified country appears on the shortest paths between all the unique pairs
+            of airports in that country. It determines the importance of an airport in this
+            algorithm.
+
+            Betweennes centrality, and therefore the importance of an airport in this algorithm,
+            can be determined based on two methods:
+            1) The number of times an airport in a specified country appears on the paths with
+            the shortest DISTANCE (using Dijkstra) between all the unique pairs of airports
+            in that country.
+            2) The number of times an airport in a specified country appears on the paths with
+            the least number of TRANSFERS/TRANSIT FLIGHTS (using BFS) between all the unique pairs of airports
+            in that country.
+
+            The weights specify how much of shortest distance (Dijkstra) a user cares about
+            and how much of least number of transfers/transit flights (BFS) a user cares about
+            when finding the most important airport in a specified country.
+
+            The first weight is for shortest distance (Dijkstra), the second weight is for
+            least number of transfers/transit flights (BFS).
+
+            The weights must add up to 1 (e.g. 0.3, 0.7). For instance, if a user only cares about
+            shortest distance when finding the most important airport, the user can enter (1, 0)
+            in the parameter of the getMostImportantAirport() function.
+*/
+
 int main() {
-    string country = "Country A";
-    string airportFile = "lib/testSet/testBetweenness.dat";
-    string routeFile = "lib/testSet/testBetweenness2.dat";
+    string country = "Russia";
+    string airportFile = "lib/dataSet/airports.dat";
+    string routeFile = "lib/dataSet/routes.dat";
 
-    vector<Airport> test = readAirport(airportFile, country);
-    vector<Edge> routes = readRoute(routeFile);
     Graph graph = Graph(country, airportFile, routeFile);
-    bool found = false;
-    int order = 1;
 
-    cout << graph.getMostImportantAirport(0.3, 0.7) << endl;
+    string mostImportantAirport = graph.getMostImportantAirport();
 
-
-    /*vector<string> vertices = graph.getVertices();
-    for (unsigned int i = 0; i < 1200; i++) {
-        cout << vertices[i] << endl;
-    }*/
-
-    /*for (auto edge : routes) {
-        cout << edge.source << " -> " << edge.dest << endl;
-    }*/
-
-    /*for (unsigned int i = 0; i < test.size(); i++) {
-        if (test[i].country == country) {
-            cout << "The " << order << " st/nd/rd/th airport in " << country << " with ID: " << test[i].id <<
-            " at " << i << " st/nd/rd/th position in the airports vector is: " << test[i].name <<
-            " with latitude " << test[i].latitude << " and longitude: " << test[i].longitude << "." << endl;
-            found = true;
-            order++;
-        }
-    }
-    if (!found) {
-        cout << "No airport found with the given country." << endl;
-    }*/
-
-    /*vector<string> path = graph.getShortestPath("1444", "1455");
-
-    for (string airport_id : path) {
-        cout << airport_id << endl;
-    }*/
+    cout << "The most important airport in " << country << " is: " << mostImportantAirport << "." << endl;
 
     return 0;
 }
