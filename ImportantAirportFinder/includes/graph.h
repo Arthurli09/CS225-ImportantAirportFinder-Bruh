@@ -40,6 +40,7 @@ public:
     string getMostImportantAirport(double dijkstraWeight, double bfsWeight);
     void calcBetweennessCentrality();
     void calcBetweennessCentrality(double dijkstraWeight, double bfsWeight);
+    unordered_map<string, double> bt_map; // for testing only
 private:
     vector<string> vertices_;
     vector<Airport> all_airports;

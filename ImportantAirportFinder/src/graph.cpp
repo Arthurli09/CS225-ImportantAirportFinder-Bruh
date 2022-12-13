@@ -11,8 +11,8 @@ Graph::Graph(string country, string airportFile, string routeFile) {
       }
     }
     for (auto route : routes) {
-        //cout << route.source << endl;
-        //cout << route.dest << endl;
+        // cout << route.source << endl;
+        // cout << route.dest << endl;
         if (all_airports[stoi(route.source)].id != "0" && all_airports[stoi(route.dest)].id != "0") {
           addEdge(route);
         }
@@ -29,7 +29,7 @@ void Graph::addEdge(Edge route) {    // add edge and set weight based on the dis
     double long2 = all_airports[stoi(route.dest)].longitude;
     //cout << "get d.lo" << endl;
     route.weight = calDistance(lat1, lat2, long1, long2);
-    adjList[route.source].push_back(pair<string, double>(route.source, route.weight));
+    adjList[route.source].push_back(pair<string, double>(route.dest, route.weight));
 }
 
 double Graph::calDistance(double lat1, double lat2, double long1, double long2) {
@@ -187,7 +187,7 @@ string Graph::getMostImportantAirport(double dijkstraWeight, double bfsWeight) {
 
 void Graph::calcBetweennessCentrality() {
   unordered_map<string, double> bt;
-  //cout << vertices_.size() << endl;
+  // cout << vertices_.size() << endl;
   for (unsigned int i = 0; i < vertices_.size() - 1; i++) {
     for (unsigned int j = i + 1; j < vertices_.size(); j++) {
       //cout << i << " " << j << endl;
@@ -195,14 +195,20 @@ void Graph::calcBetweennessCentrality() {
       vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
       for (unsigned int k = 0; k < pathWeighted.size(); k++) {
         bt[pathWeighted[k]]++;
+        // cout << pathWeighted[k] << " " << bt[pathWeighted[k]] << "--";
       }
       for (unsigned int k = 0; k < pathUnweighted.size(); k++) {
         bt[pathUnweighted[k]]++;
+        // cout << pathUnweighted[k] << " " << bt[pathUnweighted[k]] << "--";
       }
     }
   }
+  bt_map = bt;
 
   for (auto a : bt) {
+    if (all_airports.empty()) {
+      break;
+    }
     all_airports[stoi(a.first)].betweeness = a.second;
   }
 }
@@ -226,8 +232,12 @@ void Graph::calcBetweennessCentrality(double dijkstraWeight, double bfsWeight) {
       }
     }
   }
+  bt_map = bt;
 
   for (auto a : bt) {
+    if (all_airports.empty()) {
+      break;
+    }
     all_airports[stoi(a.first)].betweeness = a.second;
   }
 }
