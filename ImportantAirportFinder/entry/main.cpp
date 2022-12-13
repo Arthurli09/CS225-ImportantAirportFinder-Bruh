@@ -24,17 +24,18 @@ using namespace std;
 */
 
 int main() {
-    string country = "Papua New Guinea";
-    string airportFile = "lib/dataSet/airports.dat";
-    string routeFile = "lib/dataSet/routes.dat";
-    bool found = false;
-    int order = 1;
+    string country = "Country A";
+    string airportFile = "lib/testSet/testBetweenness.dat";
+    string routeFile = "lib/testSet/testBetweenness2.dat";
+
     vector<Airport> test = readAirport(airportFile, country);
     vector<Edge> routes = readRoute(routeFile);
     Graph graph = Graph(country, airportFile, routeFile);
+    bool found = false;
+    int order = 1;
 
-    cout << graph.getMostImportantAirport(0, 1) << endl;
-    cout << graph.getMostImportantAirport(1, 0) << endl;
+    cout << graph.getMostImportantAirport(0.3, 0.7) << endl;
+
 
     /*vector<string> vertices = graph.getVertices();
     for (unsigned int i = 0; i < 1200; i++) {

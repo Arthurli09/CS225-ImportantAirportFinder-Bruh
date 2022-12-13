@@ -1,6 +1,7 @@
 #include "catch.hpp"
 
 #include <algorithm>
+#include <utility>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -208,4 +209,120 @@ TEST_CASE("Testing BFS #3", "[part=1]") {
       path_s += i;
     }
     REQUIRE(path_s == "ABE");
+}
+
+TEST_CASE("Testing getMostImportantAirport unweighted #1", "[part=2]") {
+    string country = "Country A";
+    string airportFile = "lib/testSet/testBetweenness.dat";
+    string routeFile = "lib/testSet/testBetweenness2.dat";
+
+    vector<Airport> test = readAirport(airportFile, country);
+    vector<Edge> routes = readRoute(routeFile);
+    Graph graph = Graph(country, airportFile, routeFile);
+
+    REQUIRE(graph.getMostImportantAirport() == "Airport 02");
+}
+
+TEST_CASE("Testing getMostImportantAirport unweighted #2", "[part=2]") {
+    string country = "Country B";
+    string airportFile = "lib/testSet/testBetweenness.dat";
+    string routeFile = "lib/testSet/testBetweenness2.dat";
+
+    vector<Airport> test = readAirport(airportFile, country);
+    vector<Edge> routes = readRoute(routeFile);
+    Graph graph = Graph(country, airportFile, routeFile);
+
+    REQUIRE(graph.getMostImportantAirport() == "Airport 06");
+}
+
+TEST_CASE("Testing getMostImportantAirport weighted #1", "[part=2]") {
+    string country = "Country A";
+    string airportFile = "lib/testSet/testBetweenness.dat";
+    string routeFile = "lib/testSet/testBetweenness2.dat";
+
+    vector<Airport> test = readAirport(airportFile, country);
+    vector<Edge> routes = readRoute(routeFile);
+    Graph graph = Graph(country, airportFile, routeFile);
+
+    REQUIRE(graph.getMostImportantAirport(0.3, 0.7) == "Airport 02");
+}
+
+TEST_CASE("Testing getMostImportantAirport weighted #2", "[part=2]") {
+    string country = "Country B";
+    string airportFile = "lib/testSet/testBetweenness.dat";
+    string routeFile = "lib/testSet/testBetweenness2.dat";
+
+    vector<Airport> test = readAirport(airportFile, country);
+    vector<Edge> routes = readRoute(routeFile);
+    Graph graph = Graph(country, airportFile, routeFile);
+
+    REQUIRE(graph.getMostImportantAirport(0.3, 0.7) == "Airport 06");
+}
+
+TEST_CASE("Testing calcBetweennessCentrality unweighted #1", "[part=2]") {
+    Graph g = Graph();
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+
+    g.addEdge("A", "B", 5);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 1);
+    g.addEdge("B", "E", 6);
+
+    g.calcBetweennessCentrality();
+    REQUIRE(g.bt_map["B"] == 18);
+}
+
+TEST_CASE("Testing calcBetweennessCentrality unweighted #2", "[part=2]") {
+    Graph g = Graph();
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+
+    g.addEdge("A", "B", 5);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 1);
+    g.addEdge("B", "E", 6);
+
+    g.calcBetweennessCentrality();
+    REQUIRE(g.bt_map["A"] == 14);
+}
+
+TEST_CASE("Testing calcBetweennessCentrality weighted #1", "[part=2]") {
+    Graph g = Graph();
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+
+    g.addEdge("A", "B", 5);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 1);
+    g.addEdge("B", "E", 6);
+
+    g.calcBetweennessCentrality(0.3, 0.7);
+    REQUIRE(g.bt_map["B"] == 9);
+}
+
+TEST_CASE("Testing calcBetweennessCentrality weighted #2", "[part=2]") {
+    Graph g = Graph();
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+
+    g.addEdge("A", "B", 5);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 1);
+    g.addEdge("B", "E", 6);
+
+    g.calcBetweennessCentrality(0.3, 0.7);
+    REQUIRE(g.bt_map["A"] == 7);
 }
