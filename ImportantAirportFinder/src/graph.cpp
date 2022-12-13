@@ -11,8 +11,6 @@ Graph::Graph(string country, string airportFile, string routeFile) {
       }
     }
     for (auto route : routes) {
-        // cout << route.source << endl;
-        // cout << route.dest << endl;
         if (all_airports[stoi(route.source)].id != "0" && all_airports[stoi(route.dest)].id != "0") {
           addEdge(route);
         }
@@ -21,13 +19,9 @@ Graph::Graph(string country, string airportFile, string routeFile) {
 
 void Graph::addEdge(Edge route) {    // add edge and set weight based on the distance
     double lat1 = all_airports[stoi(route.source)].latitude;
-    //cout << "get s.la" << endl;
     double long1 = all_airports[stoi(route.source)].longitude;
-    //cout << "get s.lo" << endl;
     double lat2 = all_airports[stoi(route.dest)].latitude;
-    //cout << "get d.la" << endl;
     double long2 = all_airports[stoi(route.dest)].longitude;
-    //cout << "get d.lo" << endl;
     route.weight = calDistance(lat1, lat2, long1, long2);
     adjList[route.source].push_back(pair<string, double>(route.dest, route.weight));
 }
@@ -151,7 +145,12 @@ void Graph::addEdge(const string &source, const string &dest, double distance) {
 }
 
 string Graph::getMostImportantAirport() {
-  cout << "Starting to calculate betweenness." << endl;
+  if (vertices_.size() > 100) {
+    cout << "The dataset for this country is large," << endl;
+    cout << "it might take a while (up to 1 - 2 minutes) to finish calculating betweenness centrality," << endl;
+    cout << "please wait patiently." << endl;
+  }
+  cout << "Calculating betweenness..." << endl;
   calcBetweennessCentrality();
   cout << "Finished calculating betweenness." << endl;
   
@@ -172,7 +171,14 @@ string Graph::getMostImportantAirport(double dijkstraWeight, double bfsWeight) {
     return "";
   }
 
+  if (vertices_.size() > 100) {
+    cout << "The dataset for this country is large," << endl;
+    cout << "it might take a while (up to 1 - 2 minutes) to finish calculating betweenness centrality," << endl;
+    cout << "please wait patiently." << endl;
+  }
+  cout << "Calculating betweenness..." << endl;
   calcBetweennessCentrality(dijkstraWeight, bfsWeight);
+  cout << "Finished calculating betweenness." << endl;
   
   double maxBetweenness = 0;
   string mostImportantAirport = "";
@@ -187,19 +193,15 @@ string Graph::getMostImportantAirport(double dijkstraWeight, double bfsWeight) {
 
 void Graph::calcBetweennessCentrality() {
   unordered_map<string, double> bt;
-  // cout << vertices_.size() << endl;
   for (unsigned int i = 0; i < vertices_.size() - 1; i++) {
     for (unsigned int j = i + 1; j < vertices_.size(); j++) {
-      //cout << i << " " << j << endl;
       vector<string> pathWeighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
       vector<string> pathUnweighted = getShortestPathWeighted(vertices_[i], vertices_[j]);
       for (unsigned int k = 0; k < pathWeighted.size(); k++) {
         bt[pathWeighted[k]]++;
-        // cout << pathWeighted[k] << " " << bt[pathWeighted[k]] << "--";
       }
       for (unsigned int k = 0; k < pathUnweighted.size(); k++) {
         bt[pathUnweighted[k]]++;
-        // cout << pathUnweighted[k] << " " << bt[pathUnweighted[k]] << "--";
       }
     }
   }
